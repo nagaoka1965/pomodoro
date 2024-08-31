@@ -54,6 +54,7 @@
         let isRunning = false;
         let isPaused = false;
         let timerInterval;
+        let previousStatus = "Ready"; // 一時停止前の状態を保存する変数
 
         function startTimer() {
             clearExistingTimer();
@@ -108,10 +109,11 @@
             if (!isRunning) return;
 
             if (isPaused) {
+                updateStatus(previousStatus); // 再開時に以前の状態に戻す
                 startCountdown();
-                updateStatus("Resumed");
             } else {
                 clearInterval(timerInterval);
+                previousStatus = document.getElementById('status').textContent; // 一時停止前の状態を保存
                 updateStatus("Paused");
             }
             isPaused = !isPaused;
