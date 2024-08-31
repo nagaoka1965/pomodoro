@@ -73,7 +73,7 @@
             const customMinutes = document.getElementById('custom-time').value;
             timeLeft = customMinutes * 60;
             updateStatus(`Working for ${customMinutes} minutes`);
-            startCountdown(false); // false = カスタムタイマー
+            startCountdown(true); // true = カスタムタイマー
         }
 
         function startShortBreak() {
@@ -133,7 +133,7 @@
         function handleTimeUp(isWorkTimer) {
             updateStatus("Ready");
             let customMessage = document.getElementById('custom-message').value;
-            if (isWorkTimer && customMessage) {
+            if (isWorkTimer && customMessage.trim() !== "") {
                 alert(customMessage);
             } else {
                 alert("Time's up!");
