@@ -17,6 +17,10 @@
             font-size: 48px;
             margin-bottom: 20px;
         }
+        #status {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
         button, input {
             margin: 0 10px;
             padding: 10px 20px;
@@ -29,6 +33,7 @@
 </head>
 <body>
     <div>
+        <div id="status">Ready</div>
         <div id="timer">25:00</div>
         <button onclick="startTimer()">Start 25min</button>
         <button onclick="startCustomTimer()">Start Custom</button>
@@ -52,25 +57,34 @@
         function startTimer() {
             if (isRunning) return;
             timeLeft = defaultTime;
-            isRunning = true;
-
-            timerInterval = setInterval(() => {
-                timeLeft--;
-                updateTimerDisplay(timeLeft);
-                if (timeLeft <= 0) {
-                    clearInterval(timerInterval);
-                    isRunning = false;
-                    alert("Time's up!");
-                }
-            }, 1000);
+            updateStatus("Working for 25 minutes");
+            startCountdown();
         }
 
         function startCustomTimer() {
             if (isRunning) return;
             const customMinutes = document.getElementById('custom-time').value;
             timeLeft = customMinutes * 60;
-            isRunning = true;
+            updateStatus(`Working for ${customMinutes} minutes`);
+            startCountdown();
+        }
 
+        function startShortBreak() {
+            if (isRunning) return;
+            timeLeft = shortBreakTime;
+            updateStatus("Taking a 5-minute break");
+            startCountdown();
+        }
+
+        function startLongBreak() {
+            if (isRunning) return;
+            timeLeft = longBreakTime;
+            updateStatus("Taking a 15-minute break");
+            startCountdown();
+        }
+
+        function startCountdown() {
+            isRunning = true;
             timerInterval = setInterval(() => {
                 timeLeft--;
                 updateTimerDisplay(timeLeft);
@@ -78,38 +92,7 @@
                     clearInterval(timerInterval);
                     isRunning = false;
                     alert("Time's up!");
-                }
-            }, 1000);
-        }
-
-        function startShortBreak() {
-            if (isRunning) return;
-            timeLeft = shortBreakTime;
-            isRunning = true;
-
-            timerInterval = setInterval(() => {
-                timeLeft--;
-                updateTimerDisplay(timeLeft);
-                if (timeLeft <= 0) {
-                    clearInterval(timerInterval);
-                    isRunning = false;
-                    alert("Break's over!");
-                }
-            }, 1000);
-        }
-
-        function startLongBreak() {
-            if (isRunning) return;
-            timeLeft = longBreakTime;
-            isRunning = true;
-
-            timerInterval = setInterval(() => {
-                timeLeft--;
-                updateTimerDisplay(timeLeft);
-                if (timeLeft <= 0) {
-                    clearInterval(timerInterval);
-                    isRunning = false;
-                    alert("Break's over!");
+                    updateStatus("Ready");
                 }
             }, 1000);
         }
@@ -118,6 +101,7 @@
             if (!isRunning) return;
             clearInterval(timerInterval);
             isRunning = false;
+            updateStatus("Paused");
         }
 
         function resetTimer() {
@@ -125,12 +109,17 @@
             isRunning = false;
             timeLeft = defaultTime;
             updateTimerDisplay(timeLeft);
+            updateStatus("Ready");
         }
 
         function updateTimerDisplay(time) {
             const minutes = Math.floor(time / 60);
             const seconds = time % 60;
             document.getElementById('timer').textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+        }
+
+        function updateStatus(status) {
+            document.getElementById('status').textContent = status;
         }
     </script>
 </body>
