@@ -17,12 +17,18 @@
             font-size: 48px;
             margin-bottom: 20px;
         }
+        button {
+            margin: 0 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+        }
     </style>
 </head>
 <body>
     <div>
         <div id="timer">25:00</div>
         <button onclick="startTimer()">Start</button>
+        <button onclick="stopTimer()">Stop</button>
         <button onclick="resetTimer()">Reset</button>
     </div>
 
@@ -48,6 +54,11 @@
                     alert("Time's up!");
                 }
             }, 1000);
+        }
+
+        function stopTimer() {
+            clearInterval(timerInterval);
+            isRunning = false;
         }
 
         function resetTimer() {
