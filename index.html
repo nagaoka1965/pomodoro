@@ -26,13 +26,17 @@
             max-height: 50%;
             text-align: center;
         }
-        #timer {
-            font-size: 36px;
+        #status-timer {
+            display: flex;
+            align-items: center;
             margin-bottom: 10px;
         }
         #status {
             font-size: 18px;
-            margin-bottom: 10px;
+            margin-right: 10px;
+        }
+        #timer {
+            font-size: 36px;
         }
         button, input {
             margin: 2px 5px;
@@ -58,8 +62,10 @@
 </head>
 <body>
     <div id="timer-container">
-        <div id="status">Ready</div>
-        <div id="timer">25:00</div>
+        <div id="status-timer">
+            <div id="status">Ready</div>
+            <div id="timer">25:00</div>
+        </div>
         <div>
             <button onclick="startTimer()">Start 25min</button>
             <button onclick="startCustomTimer()">Start Custom</button>
