@@ -39,7 +39,7 @@
         <button onclick="startCustomTimer()">Start Custom</button>
         <button onclick="startShortBreak()">5min Break</button>
         <button onclick="startLongBreak()">15min Break</button>
-        <button onclick="pauseTimer()">Pause</button>
+        <button onclick="pauseOrResumeTimer()">Pause</button>
         <button onclick="resetTimer()">Reset</button>
         <br><br>
         <label for="custom-time">Custom Time (min):</label>
@@ -52,6 +52,7 @@
         let longBreakTime = 15 * 60; // 15 minutes in seconds
         let timeLeft = defaultTime;
         let isRunning = false;
+        let isPaused = false;
         let timerInterval;
 
         function startTimer() {
@@ -84,10 +85,9 @@
         }
 
         function clearExistingTimer() {
-            if (isRunning) {
-                clearInterval(timerInterval);
-                isRunning = false;
-            }
+            clearInterval(timerInterval);
+            isRunning = false;
+            isPaused = false;
         }
 
         function startCountdown() {
@@ -98,17 +98,23 @@
                 if (timeLeft <= 0) {
                     clearInterval(timerInterval);
                     isRunning = false;
-                    alert("Time's up!");
                     updateStatus("Ready");
+                    alert("Time's up!");
                 }
             }, 1000);
         }
 
-        function pauseTimer() {
+        function pauseOrResumeTimer() {
             if (!isRunning) return;
-            clearInterval(timerInterval);
-            isRunning = false;
-            updateStatus("Paused");
+
+            if (isPaused) {
+                startCountdown();
+                updateStatus("Resumed");
+            } else {
+                clearInterval(timerInterval);
+                updateStatus("Paused");
+            }
+            isPaused = !isPaused;
         }
 
         function resetTimer() {
@@ -125,8 +131,4 @@
         }
 
         function updateStatus(status) {
-            document.getElementById('status').textContent = status;
-        }
-    </script>
-</body>
-</html>
+            document.getElement
