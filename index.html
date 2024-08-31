@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -28,21 +28,19 @@
     <div>
         <div id="timer">25:00</div>
         <button onclick="startTimer()">Start</button>
-        <button onclick="stopTimer()">Stop</button>
+        <button onclick="pauseTimer()">Pause</button>
         <button onclick="resetTimer()">Reset</button>
     </div>
 
     <script>
         let workTime = 25 * 60; // 25 minutes in seconds
-        let shortBreakTime = 5 * 60; // 5 minutes in seconds
-        let longBreakTime = 15 * 60; // 15 minutes in seconds
+        let timeLeft = workTime;
         let isRunning = false;
         let timerInterval;
 
         function startTimer() {
             if (isRunning) return;
             isRunning = true;
-            let timeLeft = workTime;
 
             timerInterval = setInterval(() => {
                 timeLeft--;
@@ -50,13 +48,13 @@
                 if (timeLeft <= 0) {
                     clearInterval(timerInterval);
                     isRunning = false;
-                    // Add sound or alert to notify the end of the timer
                     alert("Time's up!");
                 }
             }, 1000);
         }
 
-        function stopTimer() {
+        function pauseTimer() {
+            if (!isRunning) return;
             clearInterval(timerInterval);
             isRunning = false;
         }
@@ -64,7 +62,8 @@
         function resetTimer() {
             clearInterval(timerInterval);
             isRunning = false;
-            updateTimerDisplay(workTime);
+            timeLeft = workTime;
+            updateTimerDisplay(timeLeft);
         }
 
         function updateTimerDisplay(time) {
@@ -74,4 +73,3 @@
         }
     </script>
 </body>
-</html>
