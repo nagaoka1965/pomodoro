@@ -17,29 +17,54 @@
             font-size: 48px;
             margin-bottom: 20px;
         }
-        button {
+        button, input {
             margin: 0 10px;
             padding: 10px 20px;
             font-size: 16px;
+        }
+        input[type="number"] {
+            width: 60px;
         }
     </style>
 </head>
 <body>
     <div>
         <div id="timer">25:00</div>
-        <button onclick="startTimer()">Start</button>
+        <button onclick="startTimer()">Start 25min</button>
+        <button onclick="startCustomTimer()">Start Custom</button>
         <button onclick="pauseTimer()">Pause</button>
         <button onclick="resetTimer()">Reset</button>
+        <br><br>
+        <label for="custom-time">Custom Time (min):</label>
+        <input type="number" id="custom-time" min="1" max="120" value="25">
     </div>
 
     <script>
-        let workTime = 25 * 60; // 25 minutes in seconds
-        let timeLeft = workTime;
+        let defaultTime = 25 * 60; // 25 minutes in seconds
+        let timeLeft = defaultTime;
         let isRunning = false;
         let timerInterval;
 
         function startTimer() {
             if (isRunning) return;
+            timeLeft = defaultTime;
+            isRunning = true;
+
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                updateTimerDisplay(timeLeft);
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    isRunning = false;
+                    alert("Time's up!");
+                }
+            }, 1000);
+        }
+
+        function startCustomTimer() {
+            if (isRunning) return;
+            const customMinutes = document.getElementById('custom-time').value;
+            timeLeft = customMinutes * 60;
             isRunning = true;
 
             timerInterval = setInterval(() => {
@@ -62,7 +87,7 @@
         function resetTimer() {
             clearInterval(timerInterval);
             isRunning = false;
-            timeLeft = workTime;
+            timeLeft = defaultTime;
             updateTimerDisplay(timeLeft);
         }
 
