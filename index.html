@@ -29,6 +29,9 @@
         input[type="number"] {
             width: 60px;
         }
+        input[type="text"] {
+            width: 200px;
+        }
     </style>
 </head>
 <body>
@@ -43,7 +46,9 @@
         <button onclick="resetTimer()">Reset</button>
         <br><br>
         <label for="custom-time">Custom Time (min):</label>
-        <input type="number" id="custom-time" min="1" max="120" value="25">
+        <input type="number" id="custom-time" min="1" max="120" value="25"><br><br>
+        <label for="custom-message">Custom Message:</label>
+        <input type="text" id="custom-message" placeholder="Enter your message">
     </div>
 
     <script>
@@ -60,7 +65,7 @@
             clearExistingTimer();
             timeLeft = defaultTime;
             updateStatus("Working for 25 minutes");
-            startCountdown();
+            startCountdown(true); // true = 25minタイマー
         }
 
         function startCustomTimer() {
@@ -68,7 +73,7 @@
             const customMinutes = document.getElementById('custom-time').value;
             timeLeft = customMinutes * 60;
             updateStatus(`Working for ${customMinutes} minutes`);
-            startCountdown();
+            startCountdown(false); // false = カスタムタイマー
         }
 
         function startShortBreak() {
@@ -91,7 +96,7 @@
             isPaused = false;
         }
 
-        function startCountdown() {
+        function startCountdown(isWorkTimer = false) {
             isRunning = true;
             timerInterval = setInterval(() => {
                 timeLeft--;
@@ -99,8 +104,7 @@
                 if (timeLeft <= 0) {
                     clearInterval(timerInterval);
                     isRunning = false;
-                    updateStatus("Ready");
-                    alert("Time's up!");
+                    handleTimeUp(isWorkTimer);
                 }
             }, 1000);
         }
@@ -124,6 +128,17 @@
             timeLeft = defaultTime;
             updateTimerDisplay(timeLeft);
             updateStatus("Ready");
+        }
+
+        function handleTimeUp(isWorkTimer) {
+            updateStatus("Ready");
+            let customMessage = document.getElementById('custom-message').value;
+            if (isWorkTimer && customMessage) {
+                alert(customMessage);
+            } else {
+                alert("Time's up!");
+            }
+            document.getElementById('custom-message').value = ""; // メッセージをクリア
         }
 
         function updateTimerDisplay(time) {
