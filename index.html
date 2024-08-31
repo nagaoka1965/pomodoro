@@ -49,6 +49,8 @@
         <input type="number" id="custom-time" min="1" max="120" value="25"><br><br>
         <label for="custom-message">Custom Message:</label>
         <input type="text" id="custom-message" placeholder="Enter your message">
+        <!-- 音声ファイルの読み込み -->
+        <audio id="alarm-sound" src="https://www.soundjay.com/button/beep-07.wav" preload="auto"></audio>
     </div>
 
     <script>
@@ -133,12 +135,18 @@
         function handleTimeUp(isWorkTimer) {
             updateStatus("Ready");
             let customMessage = document.getElementById('custom-message').value;
+            playAlarm();
             if (isWorkTimer && customMessage.trim() !== "") {
                 alert(customMessage);
             } else {
                 alert("Time's up!");
             }
             document.getElementById('custom-message').value = ""; // メッセージをクリア
+        }
+
+        function playAlarm() {
+            const alarmSound = document.getElementById('alarm-sound');
+            alarmSound.play();
         }
 
         function updateTimerDisplay(time) {
